@@ -1,0 +1,27 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context="com.comma.cw01272.reservation.fragment.NoticeFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+<ExpandableListView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/exp_list"
+    android:layout_margin="10dp"
+    android:dividerHeight="10dp"
+    android:divider="#ffffff">
+
+</ExpandableListView>
+    <!--<ListView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/noticeListView"-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:dividerHeight="10dp"-->
+        <!--android:divider="#ffffff">-->
+
+    <!--</ListView>-->
+</FrameLayout>

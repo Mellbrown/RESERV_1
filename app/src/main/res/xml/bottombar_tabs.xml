@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <tabs>
+
+        <tab
+            id="@+id/tab_find_seat"
+            icon="@drawable/ic_event_seat_black_24dp"
+            title="예약하기"/>
+        <tab
+            id="@+id/tab_notice"
+            icon="@drawable/ic_comment_black_24dp"
+            title="공지사항"/>
+        <tab
+            id="@+id/tab_my_reserve"
+            icon="@drawable/ic_event_black_24dp"
+            title="내예약정보"/>
+        <tab
+            id="@+id/tab_my_info"
+            icon="@drawable/ic_person_black_24dp"
+            title="정보보기"/>
+    </tabs>
+
+</PreferenceScreen>
