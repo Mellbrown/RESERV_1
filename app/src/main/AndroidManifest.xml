@@ -3,6 +3,11 @@
     package="com.comma.cw01272.reservation">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="anroid.hardware.camera2" />
 
     <application
         android:allowBackup="true"
@@ -24,6 +29,16 @@
         <activity android:name=".activity.CompanyActivity" />
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.AddCompany"></activity>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.comma.cw01272.reservation"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

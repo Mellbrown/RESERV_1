@@ -3,6 +3,7 @@ package com.comma.cw01272.reservation.request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -10,8 +11,8 @@ import java.util.Map;
  */
 
 public class ComRegistRequest extends StringRequest {
-    final static private String URL = "http://cw01272.dothome.co.kr/UserRegister.php";
-    private Map<String, String> parameters;
+    final static private String URL = "http://cw01272.dothome.co.kr/ComRegisterRequest.php";
+    private Map<String, String> parameters = new HashMap<>();
 
     public ComRegistRequest(String name, String info, int vailableNum, int totalNum, String file_name, Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
