@@ -112,13 +112,13 @@ public class AddCompany extends AppCompatActivity implements View.OnClickListene
                     break;
                 }
 
-                final android.app.AlertDialog prgressDialog =
-                        new ProgressDialog.Builder(this)
-                        .setTitle("글 게시중")
-                        .setCancelable(false)
-                        .show();
-
                 if(strImageServerPath[0] != null){
+                    final android.app.AlertDialog prgressDialog =
+                            new ProgressDialog.Builder(this)
+                                    .setTitle("글 게시중")
+                                    .setCancelable(false)
+                                    .show();
+
                     ComRegistRequest comRegistRequest = new ComRegistRequest(valName, valInfo, valValidNum, valTotal, strImageServerPath[0], new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
