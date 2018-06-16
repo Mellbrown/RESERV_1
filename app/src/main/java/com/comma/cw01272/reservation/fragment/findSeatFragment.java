@@ -21,6 +21,7 @@ import com.comma.cw01272.reservation.adapter.ReserveListAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
@@ -33,6 +34,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class findSeatFragment extends Fragment implements ValueEventListener {
@@ -46,6 +48,8 @@ public class findSeatFragment extends Fragment implements ValueEventListener {
 
     private OnFragmentInteractionListener mListener;
 
+    private HashMap<String, Reservation> itemmap = new HashMap<>();
+    private HashMap<String, List<String>> categorymap = new HashMap<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -65,7 +69,15 @@ public class findSeatFragment extends Fragment implements ValueEventListener {
         categoryListAdpater = new CategoryListAdpater(new CategoryListAdpater.OnclickListener(){
             @Override
             public void onclick(String s) {
-
+                ReserveList.clear();
+                List<String> list = categorymap.get(s);
+                if(list != null){
+                    for(String name : list){
+                        Reservation item = itemmap.get(name);
+                        if(item != null) ReserveList.add(item);
+                    }
+                }
+                adapter.notifyDataSetChanged();
             }
         });
         categorylist.setAdapter(categoryListAdpater);
@@ -105,9 +117,16 @@ public class findSeatFragment extends Fragment implements ValueEventListener {
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
         categoryListAdpater.datalist.clear();
+        categorymap.clear();
         for(DataSnapshot data : dataSnapshot.getChildren()){
-            String value = data.getValue(String.class);
-            categoryListAdpater.datalist.add(value);
+            String name = data.child("name").getValue(String.class);
+            if(name == null) continue;
+            categoryListAdpater.datalist.add(name);
+            List<String> list = data.child("list").getValue(new GenericTypeIndicator<List<String>>(){});
+            if(list == null)
+                categorymap.put(name,new ArrayList<String>());
+            else
+                categorymap.put(name,list);
         }
         categoryListAdpater.notifyDataSetChanged();
     }
@@ -186,12 +205,11 @@ public class findSeatFragment extends Fragment implements ValueEventListener {
                     comTotalNum = object.getString("TotalNum");
                     comImg = object.getString("file_name");
                     Reservation reservation = new Reservation(comSeq, comName, cominfo, comVailableNum,comTotalNum,comImg);
-                    ReserveListView.setAdapter(adapter);
                     ReserveList.add(reservation);
-                    adapter.notifyDataSetChanged();
+                    itemmap.put(comName, reservation);
                     count++;
-
                 }
+                adapter.notifyDataSetChanged();
             }
             catch (Exception e)
             {
