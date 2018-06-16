@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +15,14 @@ import android.widget.ListView;
 
 import com.comma.cw01272.reservation.R;
 import com.comma.cw01272.reservation.activity.AddCompany;
+import com.comma.cw01272.reservation.adapter.CategoryListAdpater;
 import com.comma.cw01272.reservation.bean.Reservation;
 import com.comma.cw01272.reservation.adapter.ReserveListAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,17 +35,20 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class findSeatFragment extends Fragment {
+public class findSeatFragment extends Fragment implements ValueEventListener {
 
     private FloatingActionButton btnAdd;
     private ListView ReserveListView;
     private ReserveListAdapter adapter;
     private List<Reservation> ReserveList;
+    private RecyclerView categorylist;
+    private CategoryListAdpater categoryListAdpater;
 
     private OnFragmentInteractionListener mListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View v = inflater.inflate(R.layout.fragment_find_seat, container, false);
         ReserveListView = (ListView) v.findViewById(R.id.reserveListView);
         btnAdd = (FloatingActionButton) v.findViewById(R.id.btnAdd);
@@ -47,6 +58,17 @@ public class findSeatFragment extends Fragment {
                 startActivity(new Intent(getActivity(), AddCompany.class));
             }
         });
+
+        categorylist = ((RecyclerView) v.findViewById(R.id.categorylist));
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
+        categorylist.setLayoutManager(layoutManager);
+        categoryListAdpater = new CategoryListAdpater(new CategoryListAdpater.OnclickListener(){
+            @Override
+            public void onclick(String s) {
+
+            }
+        });
+        categorylist.setAdapter(categoryListAdpater);
         return v;
     }
 
@@ -54,6 +76,18 @@ public class findSeatFragment extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseDatabase.getInstance().getReference("category").addValueEventListener(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        FirebaseDatabase.getInstance().getReference("category").addValueEventListener(this);
     }
 
     @Override
@@ -66,6 +100,21 @@ public class findSeatFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onDataChange(DataSnapshot dataSnapshot) {
+        categoryListAdpater.datalist.clear();
+        for(DataSnapshot data : dataSnapshot.getChildren()){
+            String value = data.getValue(String.class);
+            categoryListAdpater.datalist.add(value);
+        }
+        categoryListAdpater.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+
     }
 
     public interface OnFragmentInteractionListener {
