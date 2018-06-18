@@ -31,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
     private Spinner spinner;
     private String userID;
     private String userPassword;
-    private String userGender;
+    private String userGender = "";
     private String userMajor;
     private String userEmail;
     private AlertDialog dialog;

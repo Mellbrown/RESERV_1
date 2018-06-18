@@ -42,6 +42,7 @@
                     android:src="@drawable/ic_photo_camera_black_24dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
+
             </android.support.constraint.ConstraintLayout>
 
 
